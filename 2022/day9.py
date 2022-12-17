@@ -13,8 +13,8 @@ class Point():
 
     def add_coords(self, coord):
         (x, y) = coord
-        x = 1 if  x > 1 else -1 if x < -1 else x
-        y = 1 if  y > 1 else -1 if y < -1 else y
+        x = 1 if x > 1 else -1 if x < -1 else x
+        y = 1 if y > 1 else -1 if y < -1 else y
         self.x += x
         self.y += y
 
@@ -35,7 +35,7 @@ class Point():
         elif y_diff > 1:
             return self.x - tail.x, self.y - tail.y + y_sign
 
-        return None, None
+        return 0, 0
 
 def part_1(stdin):
     """
@@ -51,9 +51,7 @@ def part_1(stdin):
             head.add_coords(moves[move])
             tail_x, tail_y = head.tail_move(tail)
 
-            if tail_x != None and tail_y != None:
-                tail.add_coords((tail_x, tail_y))
-
+            tail.add_coords((tail_x, tail_y))
             uniq_coords.add((tail.x, tail.y))
 
     return len(uniq_coords)
@@ -62,20 +60,19 @@ def part_2(stdin):
     """
     Part 2
     """
-    moves, uniq_coords, old_pos = {"U": (0, 1), "D": (0, -1), "L": (-1, 0), "R": (1, 0)}, set(), [Point() for _ in range(10)]
+    moves, uniq_coords, old_pos = {"U": (0, 1), "D": (0, -1), "L": (-1, 0), "R": (1, 0)}, {(0, 0)}, [Point() for _ in range(10)]
 
     for line in stdin:
         move, nb_move = line.split()[0], int(line.split()[1])
 
         for _ in range(nb_move):
                 old_pos[0].add_coords(moves[move])
-                for i in range(1, 10):
-                    tail_x, tail_y = old_pos[i - 1].tail_move(old_pos[i])
 
-                    if tail_x != None and tail_y != None:
-                        old_pos[i].add_coords((tail_x, tail_y))
+                for i in range(9):
+                    tail_x, tail_y = old_pos[i].tail_move(old_pos[i + 1])
+                    old_pos[i + 1].add_coords((tail_x, tail_y))
 
-                uniq_coords.add((old_pos[-1].x, old_pos[-1].y))
+                uniq_coords.add((old_pos[9].x, old_pos[9].y))
 
     return len(uniq_coords)
 
