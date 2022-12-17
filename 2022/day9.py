@@ -38,6 +38,9 @@ class Point():
         return 0, 0
 
 def part_1(stdin):
+    """
+    Part 1
+    """
     moves, uniq_coords = {"U": (0, 1), "D": (0, -1), "L": (-1, 0), "R": (1, 0)}, {(0, 0)}
     head, tail = Point(), Point()
 
@@ -47,12 +50,16 @@ def part_1(stdin):
         for _ in range(nb_move):
             head.add_coords(moves[move])
             tail_x, tail_y = head.tail_move(tail)
+
             tail.add_coords((tail_x, tail_y))
             uniq_coords.add((tail.x, tail.y))
 
     return len(uniq_coords)
 
 def part_2(stdin):
+    """
+    Part 2
+    """
     moves, uniq_coords, old_pos = {"U": (0, 1), "D": (0, -1), "L": (-1, 0), "R": (1, 0)}, {(0, 0)}, [Point() for _ in range(10)]
 
     for line in stdin:
@@ -71,4 +78,5 @@ def part_2(stdin):
 
 if __name__ == "__main__":
     res = sys.stdin.readlines()
-    print(part_2(res))
+    print("Part 1:", part_1(res))
+    print("Part 2:", part_2(res))
